@@ -75,6 +75,10 @@ while [[ $# -gt 0 ]]; do
       _storage=$2
       shift
       ;;
+    --storage_template)
+      _storage_template=$2
+      shift
+      ;;
     --swap)
       _swap=$2
       shift
@@ -130,7 +134,7 @@ mapfile -t _templates < <(pveam available -section system | sed -n "s/.*\($_os_t
   && error "No LXC template found for $_os_type-$_os_version"
 
 _template="${_templates[-1]}"
-pveam download local $_template &>/dev/null \
+pveam download $_storage_template $_template &>/dev/null \
   || error "A problem occured while downloading the LXC template."
 
 # Create variables for container disk
