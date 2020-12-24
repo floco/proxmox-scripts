@@ -75,8 +75,8 @@ while [[ $# -gt 0 ]]; do
       _storage=$2
       shift
       ;;
-    --storage_template)
-      _storage_template=$2
+    --storage-template)
+      _storage-template=$2
       shift
       ;;
     --swap)
@@ -134,7 +134,7 @@ mapfile -t _templates < <(pveam available -section system | sed -n "s/.*\($_os_t
   && error "No LXC template found for $_os_type-$_os_version"
 
 _template="${_templates[-1]}"
-pveam download $_storage_template $_template &>/dev/null \
+pveam download $_storage-template $_template &>/dev/null \
   || error "A problem occured while downloading the LXC template."
 
 # Create variables for container disk
@@ -178,7 +178,7 @@ _pct_options=(
   -swap $_swap
   -tags npm
 )
-pct create $_ctid "local:vztmpl/$_template" ${_pct_options[@]} &>/dev/null \
+pct create $_ctid "$_storage-template:vztmpl/$_template" ${_pct_options[@]} &>/dev/null \
   || error "A problem occured while creating LXC container."
 
 # Set container timezone to match host
